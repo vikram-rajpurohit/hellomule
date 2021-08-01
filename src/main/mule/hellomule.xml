@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b4750781-bd51-4def-9ef2-09952bc8d69b" >
+		<http:listener-connection host="0.0.0.0" port="8093" />
+	</http:listener-config>
+	<flow name="hellomuleFlow" doc:id="0023b966-667b-4f37-9707-c88e663331c9" >
+		<http:listener doc:name="Listener" doc:id="cdf0c72e-70b0-4265-9a9e-d165987ec5cf" path="/hellomule" config-ref="HTTP_Listener_config"/>
+		<try doc:name="Try" doc:id="af6ff4fd-4d24-4095-a2c7-9a0b9452ea86" >
+			<validation:is-null doc:name="Is null" doc:id="29cd8458-830d-4492-bdb7-187a3c05b310" value="null"/>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="330c2700-654f-4370-9061-2b0f2761de18" >
+					<set-payload value="ERROR1" doc:name="ERROR1" doc:id="f36417d2-7b72-4838-b87b-bffa4cbeff9d" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<set-payload value="END" doc:name="END" doc:id="a50d69ea-3a42-4f91-950b-9eb073c84ce4" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6c1050d0-9986-4f69-8ede-991e2b026f9b" >
+				<set-payload value="ERROR2" doc:name="ERROR2" doc:id="fc76ccba-5590-48fb-b6d2-d45fae34250b" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
